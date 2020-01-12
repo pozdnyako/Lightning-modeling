@@ -5,6 +5,7 @@ class Matrix {
 public:
     Matrix();
     Matrix(int, int);
+    Matrix(const Matrix&);
 
     virtual ~Matrix();
 
@@ -16,6 +17,7 @@ public:
 
     int     get_sizeX() { return sizeX; }
     int     get_sizeY() { return sizeY; }
+    double* get_data() { return data; }
 
     void    print();
 private:

@@ -12,6 +12,17 @@ Matrix::Matrix(int y, int x) {
     allocate_mem();
 }
 
+Matrix::Matrix(const Matrix& matrix) {
+    sizeX = matrix.sizeX;
+    sizeY = matrix.sizeY;
+
+    allocate_mem();
+
+    for(int i = 0; i < sizeX * sizeY; i ++) {
+        data[i] = matrix.data[i];
+    }
+}
+
 void Matrix::allocate_mem() {
     if(is_mem_allocated) {
         delete[] data;

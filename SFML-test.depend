@@ -1229,7 +1229,7 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1578865467 source:d:\users\admin\documents\github\lightning\main.cpp
+1578866007 source:d:\users\admin\documents\github\lightning\main.cpp
 	<SFML/Graphics.hpp>
 	"Matrix.h"
 	"Solver.h"
@@ -1643,13 +1643,13 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1578865014 source:d:\users\admin\documents\github\lightning\matrix.cpp
+1578865988 source:d:\users\admin\documents\github\lightning\matrix.cpp
 	"Matrix.h"
 	<cstdio>
 
-1578862368 d:\users\admin\documents\github\lightning\matrix.h
+1578865892 d:\users\admin\documents\github\lightning\matrix.h
 
-1578864766 source:d:\users\admin\documents\github\lightning\solver.cpp
+1578865485 source:d:\users\admin\documents\github\lightning\solver.cpp
 	"Solver.h"
 	<cstdio>
 	<cmath>
