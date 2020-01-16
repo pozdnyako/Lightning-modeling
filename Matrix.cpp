@@ -6,6 +6,8 @@ Matrix::Matrix() {
 }
 
 Matrix::Matrix(int y, int x) {
+    is_mem_allocated = false;
+
     sizeX = x;
     sizeY = y;
 
@@ -13,6 +15,8 @@ Matrix::Matrix(int y, int x) {
 }
 
 Matrix::Matrix(const Matrix& matrix) {
+    is_mem_allocated = false;
+
     sizeX = matrix.sizeX;
     sizeY = matrix.sizeY;
 

@@ -23,6 +23,7 @@ void solve(Matrix A, Matrix B, Matrix *ans) {
     const double EPS = 0.0001;
 
     for(int k = 0; k < n; k ++) {
+            printf("k: %d\n", k);
         double max = std::abs(A(k,k));
 
         int index = k;

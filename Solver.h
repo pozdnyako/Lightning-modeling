@@ -3,6 +3,6 @@
 
 #include "Matrix.h"
 
-void solve(Matrix, Matrix, Matrix*);
+void solve(Matrix A, Matrix B, Matrix* ans); // A * ans = B, finding ans
 
 #endif // SOLVER_H_INCLUDED

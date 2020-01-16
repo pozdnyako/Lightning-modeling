@@ -17,7 +17,7 @@ public:
 
     int     get_sizeX() { return sizeX; }
     int     get_sizeY() { return sizeY; }
-    double* get_data() { return data; }
+    double* get_data()  { return data; }
 
     void    print();
 private:

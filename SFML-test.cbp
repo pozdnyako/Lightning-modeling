@@ -45,18 +45,13 @@
 		<Linker>
 			<Add directory="D:/libs/SFML/lib" />
 		</Linker>
+		<Unit filename="3Matrix.h" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Matrix.cpp" />
 		<Unit filename="Matrix.h" />
-		<Unit filename="openal32.dll" />
-		<Unit filename="sfml-audio-2.dll" />
-		<Unit filename="sfml-audio-d-2.dll" />
-		<Unit filename="sfml-graphics-2.dll" />
-		<Unit filename="sfml-network-d-2.dll" />
-		<Unit filename="sfml-system-2.dll" />
-		<Unit filename="sfml-system-d-2.dll" />
-		<Unit filename="sfml-window-2.dll" />
-		<Unit filename="sfml-window-d-2.dll" />
+		<Unit filename="Matrix3.cpp" />
+		<Unit filename="Solver.cpp" />
+		<Unit filename="Solver.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
