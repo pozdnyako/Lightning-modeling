@@ -1,5 +1,7 @@
 #include <SFML/Graphics.hpp>
 
+#include <cmath>
+
 #include "Matrix.h"
 #include "Matrix3.h"
 #include "Solver.h"

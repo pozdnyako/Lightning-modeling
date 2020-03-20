@@ -1229,8 +1229,9 @@
 	<SFML/Graphics/Drawable.hpp>
 	<SFML/Window/GlResource.hpp>
 
-1579195313 source:d:\users\admin\documents\github\lightning\main.cpp
+1580900722 source:d:\users\admin\documents\github\lightning\main.cpp
 	<SFML/Graphics.hpp>
+	<cmath>
 	"Matrix.h"
 	"Matrix3.h"
 	"Solver.h"
