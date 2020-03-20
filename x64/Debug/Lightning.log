@@ -1,6 +1,5 @@
 ﻿  Interface.cpp
   Main.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Main.cpp(13,16): warning C4101: calc: неиспользованная локальная переменная
+D:\Users\Admin\Documents\GitHub\Lightning\Main.cpp(16,16): warning C4101: calc: неиспользованная локальная переменная
   Создание кода...
-     ╤ючфрхЄё  сшсышюЄхър D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.lib ш юс·хъЄ D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exp
   Lightning.vcxproj -> D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exe

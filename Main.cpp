@@ -5,19 +5,22 @@
 #include "Calculator.h"
 #include "Interface.h"
 
-void f() {
-    std::cout << "Call";
+void Interface::update() {
+    //std::cout << "Update" << std::endl;
 }
 
 int main() {
+    Parameters param("cfg/standard.txt");
+    std::cout << param << std::endl;
+
     Calculator calc;
-    Interface prog(200, 200, "Lightning modeling");
-    
-    prog.run(f);
+    Interface prog(param, "Lightning modeling");
+
+    prog.run();
     return 0;
 }
 
-bool CalculatorTest() {
+bool addWithCudaTest() {
     int *a, *b, *c;
     int size = 10;
 
