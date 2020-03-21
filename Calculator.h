@@ -7,30 +7,54 @@
 
 namespace CUDA {
     class Grid3;
+    struct Task;
 
     class Calculator {
     public:
-        Calculator():u1(NULL),u2(NULL),u(NULL) {};
+        Calculator():u1(NULL),u2(NULL),u(NULL),prev_u(NULL) {};
         Calculator(const Parameters &);
         ~Calculator();
+
+        void calcU();
     private:
+        Parameters param;
 
         Grid3 *u1, *u2;
-        Grid3 *u;
+        Grid3 *u, *prev_u;
+
+        Grid3 *border;
+        std::vector<Vector3i> charge;
+
+        Task* task;
+
+        int borderSize;
+        int lst_chargeCount;
+        void initBorder();
+        void updateBorder();
+
+        void initTask();
+        void freeTask();
     };
 
     class Grid3 {
     public:
         Grid3();
-        Grid3(int, int, int);
+        Grid3(int, int, int, bool GPU=true);
 
         ~Grid3();
 
         double at(int, int, int);
         void set(double, int, int, int);
+        void set(double, const Vector3i&);
 
         void cpyDataToGPU();
         void cpyDataFromGPU();
+
+        int p2n(const Vector3i&);
+        int p2n(const int&, const int&, const int&);
+        Vector3i n2p(const int&);
+
+        double* getGPUdata() { return GPUdata; }
     private:
         double *data;
         double *GPUdata;
@@ -39,15 +63,17 @@ namespace CUDA {
 
         Vector3i size;
 
-        int p2n(const Vector3i&);
-        int p2n(const int&, const int&, const int&);
-        Vector3i n2p(const int&);
-
         bool isGPUalloc;
         void GPUalloc();
         void GPUfree();
+
+        bool hasGPU;
     };
 
+    struct Task {
+        int a;
+        int a1, a2, a3, a4, a5, a6;
+    };
 
     void addInt(int*, const int*, const int*, unsigned int);
 

@@ -4,6 +4,7 @@
 
 struct Parameters {
 public:
+    Parameters() :SIZE(0), SIZE_Z(0), dL(0), U_0(0), EPS(0), SQ_SIZE(0) {};
     Parameters(std::string);
        
     int SIZE;

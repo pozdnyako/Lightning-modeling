@@ -10,6 +10,8 @@ try {
     std::cout << param << std::endl;
 
     CUDA::Calculator calc(param);
+    calc.calcU();
+
     Interface prog(param, "Lightning modeling");
 
     prog.run();
