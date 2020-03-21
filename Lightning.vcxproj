@@ -94,6 +94,7 @@
     <CudaCompile Include="Calculator.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\StopwatchWin32\Stopwatch\Stopwatch.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Interface.h" />

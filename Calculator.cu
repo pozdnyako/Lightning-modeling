@@ -81,7 +81,7 @@ void CUDA::Calculator::calcU() {
 
     std::cout << "tasks: " << n_tasks << std::endl;
 
-    for(int op = 0; op < N_OPERATION*10; op++) {
+    for(int op = 0; op < N_OPERATION; op++) {
         solve<<<1, n_tasks>>>(u->getGPUdata(), prev_u->getGPUdata(), task);
 
         std::swap(u, prev_u);
