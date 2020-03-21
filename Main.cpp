@@ -84,7 +84,7 @@ void calc_U(Matrix3 &f, Matrix3 &u, Matrix3 &u_prev, double eps, int N, int N_z,
 
     printf("n operation: %d\n", n_op);
 
-    int n_k = 1500;
+    int n_k = 10000;
 
     for(int t = 0; t < n_op / n_k /* !!!!!!!!!!!!!!!!!!!! */; t ++) {
 
@@ -104,7 +104,8 @@ void calc_U(Matrix3 &f, Matrix3 &u, Matrix3 &u_prev, double eps, int N, int N_z,
             u_prev.set_num(y, x, z, u.get_num(y, x, z));
         }}}
 
-        printf("%5.1f\%\n", (float)t * 100 * n_k / n_op);
+        if(t % 100 == 0)
+            printf("%5.1f\%\n", (float)t * 100 * n_k / n_op);
     }
 }
 
@@ -220,6 +221,8 @@ void draw(sf::RenderWindow &window, Matrix3 &u, Matrix3 f, std::vector<Point> &p
     window.display();
 }
 
+#include "../StopwatchWin32/Stopwatch/Stopwatch.h"
+
 int main() {
     srand(time(NULL));
     //freopen("out.txt", "wt", stdout);
@@ -258,8 +261,12 @@ int main() {
     set_u(u, point, N, N_z, U_0);
     set_u(u_prev, point, N, N_z, U_0);
 
+    win32::Stopwatch watch;
+    watch.Start();
     calc_U(f, u, u_prev, EPS, N, N_z, point, U_0);
+    watch.Stop();
 
+    std::cout << "time:" << watch.ElapsedMilliseconds() << std::endl;
     while (window.isOpen()) {
 
         int n_point = (int) point.size();
