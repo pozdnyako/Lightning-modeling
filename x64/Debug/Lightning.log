@@ -1,5 +1,6 @@
-﻿  Interface.cpp
-  Main.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Main.cpp(16,16): warning C4101: calc: неиспользованная локальная переменная
-  Создание кода...
-  Lightning.vcxproj -> D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exe
+﻿  Tester.cpp
+     Создается библиотека D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.lib и объект D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exp
+Tester.obj : error LNK2019: ссылка на неразрешенный внешний символ "struct Vector<double> const __cdecl operator+<double>(struct Vector<double> const &,struct Vector<double> const &)" (??$?HN@@YA?BU?$Vector@N@@AEBU0@0@Z) в функции "bool __cdecl Test::_Vector(void)" (?_Vector@Test@@YA_NXZ)
+Tester.obj : error LNK2019: ссылка на неразрешенный внешний символ "struct Vector<double> const __cdecl operator-<double>(struct Vector<double> const &,struct Vector<double> const &)" (??$?GN@@YA?BU?$Vector@N@@AEBU0@0@Z) в функции "bool __cdecl Test::_Vector(void)" (?_Vector@Test@@YA_NXZ)
+Tester.obj : error LNK2019: ссылка на неразрешенный внешний символ "double const __cdecl operator*<double>(struct Vector<double> const &,struct Vector<double> const &)" (??$?DN@@YA?BNAEBU?$Vector@N@@0@Z) в функции "bool __cdecl Test::_Vector(void)" (?_Vector@Test@@YA_NXZ)
+D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exe : fatal error LNK1120: неразрешенных внешних элементов: 3

@@ -23,6 +23,10 @@ void Interface::run() {
     }
 }
 
+void Interface::update() {
+    //std::cout << "Update" << std::endl;
+}
+
 void Interface::draw() {
     texture.loadFromImage(image);
     sprite.setTexture(texture);
