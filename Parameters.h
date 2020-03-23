@@ -19,6 +19,7 @@ public:
                  // <0 -> -SQ_SIZE cells per pixel
 
     int SCREEN_X, SCREEN_Y;
+    int SECTION_SIZE;
 };
 
 std::ostream& operator<<(std::ostream&, const Parameters&);

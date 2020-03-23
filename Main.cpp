@@ -4,7 +4,6 @@
 
 #include "Tester.h"
 
-#include "../StopwatchWin32/Stopwatch/Stopwatch.h"
 
 int main() {
 try {
@@ -13,14 +12,7 @@ try {
 
     CUDA::Calculator calc(param);
     
-    win32::Stopwatch watch;
-    watch.Start();
-    calc.calcU();
-    watch.Stop();
-
-    std::cout << watch.ElapsedMilliseconds() << "ms" << std::endl;
-
-    Interface prog(param, "Lightning modeling");
+    Interface prog(param, "Lightning modeling", &calc);
 
     prog.run();
 }

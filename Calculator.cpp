@@ -32,6 +32,7 @@ void CUDA::Calculator::initBorder() {
 		border->set(1.0f, x, 0, z);
 		
 		u->set(param.U_0, x, param.SIZE-1, z);
+		prev_u->set(param.U_0, x, param.SIZE-1, z);
 	}}
 
 	for(int y = 0; y < param.SIZE; y++) {
@@ -63,6 +64,10 @@ void CUDA::Calculator::updateBorder() {
 	}
 }
 
+double CUDA::Calculator::getU(int x, int y, int z) {
+	return u->at(x, y, z);
+}
+
 
 
 
@@ -83,7 +88,7 @@ CUDA::Grid3::Grid3() :
 CUDA::Grid3::Grid3(int x, int y, int z, bool GPU) :
 	size(x, y, z),
 	isGPUalloc(false),
-	dataSize(size.x * size.y * size.z * sizeof(double)),
+	dataSize(x * y * z * sizeof(double)),
 	data(NULL),
 	GPUdata(NULL),
 	hasGPU(GPU){
@@ -114,7 +119,7 @@ int CUDA::Grid3::p2n(const int& x, const int& y, const int& z) {
 	return x + y * size.x + z * size.x * size.y;
 }
 Vector3i CUDA::Grid3::n2p(const int& n) {
-	return Vector3i(n % size.x, n / size.x % size.y, n / size.x / size.y);
+	return Vector3i(n % size.x % size.y, n / size.x % size.y, n / size.x / size.y);
 }
 
 
@@ -126,7 +131,7 @@ double CUDA::Grid3::at(int x, int y, int z) {
 		return data[p2n(x, y, z)];
 	}
 	else
-		throw CUDA::Grid3WrongCallEx();
+		throw CUDA::Grid3WrongCallEx(x, y, z, size.x, size.y, size.z);
 }
 
 void CUDA::Grid3::set(double num, int x, int y, int z) {
@@ -137,7 +142,7 @@ void CUDA::Grid3::set(double num, int x, int y, int z) {
 		data[p2n(x,y,z)] = num;
 	}
 	else
-		throw CUDA::Grid3WrongCallEx();
+		throw CUDA::Grid3WrongCallEx(x, y, z, size.x, size.y, size.z);
 }
 
 void CUDA::Grid3::set(double num, const Vector3i &p) {

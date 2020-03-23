@@ -16,6 +16,7 @@ namespace CUDA {
         ~Calculator();
 
         void calcU();
+        double getU(int, int, int);
     private:
         Parameters param;
 
@@ -26,6 +27,7 @@ namespace CUDA {
         std::vector<Vector3i> charge;
 
         Task* task;
+        Task* _task;
 
         int borderSize;
         int lst_chargeCount;
@@ -78,11 +80,27 @@ namespace CUDA {
     void addInt(int*, const int*, const int*, unsigned int);
 
 
+
+
     class Grid3WrongCallEx : public WrongCallEx {
     public:
+        Grid3WrongCallEx(int _x, int _y, int _z, int __x, int __y, int __z):
+            x(_x), y(_y), z(_z),
+            x_max(__x), y_max(__y), z_max(__z) {}
+        Grid3WrongCallEx() {}
+
         std::string what() {
-            return WrongCallEx::what() + ", Grid3";
+            return WrongCallEx::what() + ", Grid3 at ("
+                 + std::to_string(x) + ", " 
+                 + std::to_string(y) + ", "
+                 + std::to_string(z) + ") in ("
+                 + std::to_string(x_max) + ", "
+                 + std::to_string(y_max) + ", "
+                 + std::to_string(z_max) + ") ";
         }
+    private:
+        int x, y, z;
+        int x_max, y_max, z_max;
     };
 
     class Grid3GPUReallocEx : public AllocEx {

@@ -1,21 +1,33 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
 #include <string>
 #include "Parameters.h"
 
+#include "../StopwatchWin32/Stopwatch/Stopwatch.h"
+#include "Calculator.h"
+#include "Bitmap.h"
+
 class Interface {
 public:
-	Interface(const Parameters&, std::string);
+	Interface(const Parameters&, std::string, CUDA::Calculator *);
 
 	void run();
 	void update();
 	void draw();
+	void updateImage();
 private:
+	Parameters param;
+	CUDA::Calculator *calc;
+
+	win32::Stopwatch watch;
 
 	sf::RenderWindow window;
+	
+	sf::Uint8 *pixels;
+	sf::Vector2u pixelsSize;
 
-	sf::Image image;
-	sf::Texture texture;
-	sf::Sprite sprite;
+	Bitmap bitmap;
+
+	void setPixel(int val, int x, int y, int chanal);
+	int getPixelInfo(sf::Uint8* pixels, int x, int y, int chanal);
 };

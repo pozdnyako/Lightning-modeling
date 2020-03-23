@@ -41,10 +41,12 @@ Parameters::Parameters(std::string path) {
     if(SQ_SIZE > 0) {
         SCREEN_X = 3 * SQ_SIZE * SIZE;
         SCREEN_Y =     SQ_SIZE * SIZE;
+        SECTION_SIZE = SQ_SIZE * SIZE;
     }
     else {
         SCREEN_X = 3 * SIZE / abs(SQ_SIZE);
         SCREEN_Y =     SIZE / abs(SQ_SIZE);
+        SECTION_SIZE = SIZE / abs(SQ_SIZE);
     }
 }
 

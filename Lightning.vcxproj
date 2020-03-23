@@ -82,6 +82,7 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="Calculator.cpp" />
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\StopwatchWin32\Stopwatch\Stopwatch.h" />
+    <ClInclude Include="Bitmap.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Interface.h" />
