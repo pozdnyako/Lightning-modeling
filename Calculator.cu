@@ -38,67 +38,83 @@ void CUDA::Grid3::cpyDataToGPU() {
 }
 
 void CUDA::Calculator::initTask() {
-    cudaMalloc((void**) &task, (param.SIZE - 2) * (param.SIZE - 2) * (param.SIZE_Z - 2) * sizeof(CUDA::Task));
-    Task* _task = new Task[(param.SIZE - 2) * (param.SIZE - 2) * (param.SIZE_Z - 2)];
+    cudaMalloc((void**) &task, param.SIZE * param.SIZE * param.SIZE_Z * sizeof(bool));
+    _task = new bool[param.SIZE * param.SIZE * param.SIZE_Z];
 }
 
 void CUDA::Calculator::freeTask() {
     cudaFree(task);
+    delete[] _task;
 }
 
-__global__ void solve(double *data, double *goal, CUDA::Task* task) {
-    int i = threadIdx.x + blockIdx.x * 512;
+#define N(x, y, z) (z) * size_x * size_y + (y) * size_x + (x)
 
-    CUDA::Task* cur = task + i;
+__global__ void solve(double *data, double *goal, bool* task, int size_x, int size_y, int size_z) {
+    //printf("(%d, %d, %d) in (%d %d %d)\n", threadIdx.x, threadIdx.y, threadIdx.y, blockIdx.x, blockIdx.y, blockIdx.z);
+    int x = threadIdx.x + blockIdx.x * CUDA::BLOCK_SIZE;
+    int y = threadIdx.y + blockIdx.y * CUDA::BLOCK_SIZE;
+    int z = threadIdx.z + blockIdx.z * CUDA::BLOCK_SIZE;
+    
+    if(x >= size_x || y >= size_y || z >= size_z)
+        return;
+    
+    if(!task[N(x, y, z, size_x, size_y)])
+        return;
 
-    //printf("%d -> %d %d %d %d %d %d\n", cur->a, cur->a1, cur->a2, cur->a3, cur->a4, cur->a5, cur->a6);
-
-    goal[cur->a] = (data[cur->a1] + data[cur->a2] + data[cur->a3] +
-                    data[cur->a4] + data[cur->a5] + data[cur->a6]) / 6;
-
+    goal[N(x, y, z)] = (data[N(x+1, y, z)] + data[N(x-1, y, z)] +
+                        data[N(x, y+1, z)] + data[N(x, y-1, z)] +
+                        data[N(x, y, z+1)] + data[N(x, y, z-1)]) / 6;                  
 }
 
 
 void CUDA::Calculator::calcU() {
-	u->cpyDataToGPU();
+    //std::cout << "u = " << u->at(param.SIZE / 2, param.SIZE - 2, param.SIZE_Z / 2) << std::endl;
+	prev_u->cpyDataToGPU();
 
 	int N_OPERATION = param.SIZE * param.SIZE * param.SIZE_Z * log(1 / param.EPS);
-	int boost = 1000;
+    int boost = 1000;
 
-    int n_tasks = param.SIZE * param.SIZE * param.SIZE_Z - borderSize;
-
+    int n_tasks = param.SIZE * param.SIZE * param.SIZE_Z;
     int counter = 0;
 
-    for(int x = 1; x < param.SIZE - 1; x ++) {
-	for(int y = 1; y < param.SIZE - 1; y ++) {
-	for(int z = 1; z < param.SIZE_Z - 1; z ++) {
+    for(int x = 0; x < param.SIZE; x ++) {
+	for(int y = 0; y < param.SIZE; y ++) {
+	for(int z = 0; z < param.SIZE_Z; z ++) {
 
 		if(border->at(x, y, z) == 0.0f) {
-            _task[counter].a = border->p2n(x, y, z);
-            _task[counter].a1 = border->p2n(x+1, y, z);
-            _task[counter].a2 = border->p2n(x-1, y, z);
-            _task[counter].a3 = border->p2n(x, y+1, z);
-            _task[counter].a4 = border->p2n(x, y-1, z);
-            _task[counter].a5 = border->p2n(x, y, z+1);
-            _task[counter].a6 = border->p2n(x, y, z-1);
-
-            counter++;
+            _task[x + y * param.SIZE + z * param.SIZE * param.SIZE] = true;
+            counter ++;
+        }
+        else {
+            _task[x + y * param.SIZE + z * param.SIZE * param.SIZE] = false;
         }
 	}}}
 
-    cudaMemcpy((void*) task, (void*)_task, n_tasks * sizeof(Task), cudaMemcpyHostToDevice);
+    cudaMemcpy((void*) task, (void*)_task, n_tasks * sizeof(bool), cudaMemcpyHostToDevice);
 
-    std::cout << "tasks: " << n_tasks << " operations: " << N_OPERATION << std::endl;
+    std::cout << "tasks: " << counter << "/" << n_tasks << " operations: " << N_OPERATION << std::endl;
+   
+    dim3 dimBlock(param.SIZE / CUDA::BLOCK_SIZE + 1,
+                  param.SIZE / CUDA::BLOCK_SIZE + 1,
+                  param.SIZE_Z / CUDA::BLOCK_SIZE + 1);
+
+    dim3 dimThread(CUDA::BLOCK_SIZE,
+                   CUDA::BLOCK_SIZE,
+                   CUDA::BLOCK_SIZE);
+
+    //std::cout << "(" << dimBlock.x << ", " << dimBlock.y << ", " << dimBlock.z << ")" << std::endl;
+    //std::cout << "(" << dimThread.x << ", "<< dimThread.y << ", " << dimThread.z << ")" << std::endl;
 
     for(int op = 0; op < N_OPERATION / boost; op++) {
-        solve<<< max(n_tasks / 512, 1), min(n_tasks, 512) >>>(u->getGPUdata(), prev_u->getGPUdata(), task);
+        
+        solve<<< dimBlock, dimThread >>>(u->getGPUdata(), prev_u->getGPUdata(), task, param.SIZE, param.SIZE, param.SIZE_Z);
 
+        //cudaDeviceSynchronize();
         std::swap(u, prev_u);
     }
-
-    cudaDeviceSynchronize();
     u->cpyDataFromGPU();
 
+    //std::cout << "u = " << u->at(param.SIZE / 2, param.SIZE - 2, param.SIZE_Z / 2) << std::endl;
 }
 
 template<class T>

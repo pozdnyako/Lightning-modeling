@@ -1,5 +1,31 @@
 #include "Calculator.h"
 
+std::ostream& operator<<(std::ostream &os, const cudaDeviceProp &prop) {
+    os << prop.name << ":\n" << std::endl;
+    os << "\t" << prop.totalGlobalMem << " - total amount of memory on the device in bytes" << std::endl;
+	os << "\t" << prop.sharedMemPerBlock<< " - the maximum amount of shared memory available to a thread block in bytes" << std::endl;
+	os << "\t" << prop.warpSize << " -  the warp size in threads\n";
+	os << "\t" << prop.maxThreadsPerBlock << " - maximum numbers of threads in blocks\n";
+	os << "\t" << prop.maxThreadsDim[0] << "x"
+		<< prop.maxThreadsDim[1] << "x"
+		<< prop.maxThreadsDim[2] << " - maximum size of each dimension in blocks\n";
+
+	os << "\t" << prop.clockRate/1000 << " MHz - clock freq\n";
+
+	return os;
+}
+
+void CUDA::printDevicesProperties() {
+    int n_dev = 0;
+    cudaDeviceProp prop;
+    cudaGetDeviceCount(&n_dev);
+    
+    for(int i = 0; i < n_dev; i++) {
+        cudaGetDeviceProperties(&prop, i);
+        std::cout << prop;
+    }
+}
+
 CUDA::Calculator::Calculator(const Parameters &_param) :
 	lst_chargeCount(0),
 	borderSize(0) {
@@ -14,6 +40,11 @@ CUDA::Calculator::Calculator(const Parameters &_param) :
 
 	initBorder();
 	initTask();
+
+	charge.push_back(Vector3i(param.SIZE / 2, param.SIZE - 2, param.SIZE_Z / 2));
+	charge.push_back(Vector3i(param.SIZE / 2, param.SIZE - 3, param.SIZE_Z / 2));
+	charge.push_back(Vector3i(param.SIZE / 2, param.SIZE - 4, param.SIZE_Z / 2));
+	updateBorder();
 }
 
 CUDA::Calculator::~Calculator() {
@@ -39,12 +70,24 @@ void CUDA::Calculator::initBorder() {
 	for(int z = 0; z < param.SIZE_Z; z++) {
 		border->set(1.0f, 0, y, z);
 		border->set(1.0f, param.SIZE-1, y, z);
+
+		u->set(param.U_0 * y / param.SIZE, 0, y, z);
+		u->set(param.U_0 * y / param.SIZE, param.SIZE-1, y, z);
+
+		prev_u->set(param.U_0 * y / param.SIZE, 0, y, z);		
+		prev_u->set(param.U_0 * y / param.SIZE, param.SIZE-1, y, z);
 	}}
 
 	for(int x = 0; x < param.SIZE; x++) {
 	for(int y = 0; y < param.SIZE; y++) {
 		border->set(1.0f, x, y, 0);
-		border->set(1.0f, x, y, param.SIZE_Z-1);		
+		border->set(1.0f, x, y, param.SIZE_Z-1);	
+
+		u->set(param.U_0 * y / param.SIZE, x, y, 0);
+		u->set(param.U_0 * y / param.SIZE, x, y, param.SIZE_Z-1);
+	
+		prev_u->set(param.U_0 * y / param.SIZE, x, y, 0);
+		prev_u->set(param.U_0 * y / param.SIZE, x, y, param.SIZE_Z-1);
 	}}
 
 	borderSize = param.SIZE * param.SIZE * param.SIZE_Z -
@@ -59,15 +102,89 @@ void CUDA::Calculator::updateBorder() {
 		border->set(1.0f, charge[i]);
 
 		u->set(param.U_0, charge[i]);
+		prev_u->set(param.U_0, charge[i]);
 
 		borderSize++;
 	}
+
+	lst_chargeCount = charge.size();
 }
 
 double CUDA::Calculator::getU(int x, int y, int z) {
 	return u->at(x, y, z);
 }
 
+
+const Vector3 CUDA::Calculator::calcE(const Vector3i& v) {
+    return Vector3(getU(v + Vector3i(-1, 0, 0)) - getU(v + Vector3i(1, 0, 0)),
+                   getU(v + Vector3i( 0,-1, 0)) - getU(v + Vector3i(0, 1, 0)),
+                   getU(v + Vector3i( 0, 0,-1)) - getU(v + Vector3i(0, 0, 1))) * 0.5f;
+}
+
+const std::pair<int, int> CUDA::Calculator::newDir() {
+    std::vector<std::pair<int, int> > goals;
+
+    for(int i = 0; i < charge.size(); i++) {
+        for(int j = 0; j < CUDA::N_DIR; j++) {
+            Vector3i goal = charge[i] + DIR[j];
+
+            if(border->at(goal) == 1.0f)
+                continue;
+
+            goals.push_back(std::make_pair(i, j));
+        }
+    }
+
+	//std::cout << "grow directions: " << goals.size() << std::endl;
+
+    std::vector<double> prob;
+    double prob_sum = 0.0f;
+	double max_prob = 0.0f;
+
+    for(int i = 0; i < goals.size(); i++) {
+        double E = calcE(charge[goals[i].first] + Vector3(DIR[goals[i].second])) * Vector3(DIR[goals[i].second]) / DIR[goals[i].second].getNorm() ;
+		double cur_prob = 0.0f;
+
+
+		if(E > 2) {
+			cur_prob = pow(E-2, 2);
+			//std::cout << calcE(charge[goals[i].first] + Vector3(DIR[goals[i].second])) << " * " << Vector3(DIR[goals[i].second]) << "=" << E << std::endl;
+		}
+
+		if(max_prob < cur_prob)
+			max_prob = cur_prob;
+
+		prob_sum += cur_prob;
+        prob.push_back(cur_prob);
+    }
+
+	if(prob_sum == 0.0f)
+		std::cout << "WRONG prob" << std::endl;
+
+
+    double res = ((double)rand() / RAND_MAX) * prob_sum;
+
+    int res_n = 0;
+
+    do {
+        res -= prob[res_n];
+        res_n ++;
+	} while( (res > 0.0f || prob[res_n] == 0.0f) && res_n < goals.size() - 1);
+
+	std::cout << "prob: " << prob[res_n] / prob_sum << " (max = "<< max_prob / prob_sum << ")" << std::endl;
+
+    return goals[res_n];
+}
+
+void CUDA::Calculator::grow() {
+    std::pair<int, int> dir_pair = newDir();
+
+    charge.push_back(charge[dir_pair.first] + DIR[dir_pair.second]);
+    charge.push_back(charge[dir_pair.first] + DIR[dir_pair.second] * 2);
+    charge.push_back(charge[dir_pair.first] + DIR[dir_pair.second] * 3);
+
+    updateBorder();
+}
 
 
 
@@ -96,7 +213,7 @@ CUDA::Grid3::Grid3(int x, int y, int z, bool GPU) :
 	data = new double[x * y * z];
 
 	for(int i = 0; i < x*y*z; i++) {
-		data[i] = 0;
+		data[i] = 0.0f;
 	}
 
 	if(hasGPU)

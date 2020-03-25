@@ -21,6 +21,17 @@ void Interface::run() {
                 window.close();
         }
 
+
+        sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+        Vector3i cursor_pos = Vector3i(localPosition.x / param.SQ_SIZE, param.SIZE - 1 - localPosition.y / param.SQ_SIZE,
+                                       param.SIZE_Z / 2);
+        if(is_in(cursor_pos.x, 1, param.SIZE - 2) && is_in(cursor_pos.y, 1, param.SIZE - 2)) {
+            std::cout << "\tposition:" << cursor_pos << std::endl;
+            std::cout << "E = " << calc->calcE(cursor_pos) << std::endl;
+            std::cout << "U = " << calc->getU(cursor_pos) << std::endl;
+            std::cout << std::endl;
+        }
+
         draw();
     }
 }
@@ -30,6 +41,8 @@ void Interface::update() {
     watch.Start();
 
     calc->calcU();
+    calc->grow();
+
     watch.Stop();
 
     std::cout << "calcU:\t" << watch.ElapsedMilliseconds() << " ms" << std::endl;
@@ -61,14 +74,14 @@ void Interface::updateImage() {
             for(int dx = 0; dx < param.SQ_SIZE; dx++) {
             for(int dy = 0; dy < param.SQ_SIZE; dy++) {
                 if(U > 0 && maxU != 0.0) {
-                    bitmap.setPixelInfo(255.0 * pow(U / maxU, 0.1),
+                    bitmap.setPixelInfo(255.0 * U / maxU,
                                         x*param.SQ_SIZE+dx, y*param.SQ_SIZE+dy, Bitmap::R_CH);
                     
                     bitmap.setPixelInfo(0,
                                         x*param.SQ_SIZE+dx, y*param.SQ_SIZE+dy, Bitmap::B_CH);
                 }
                 if(U < 0 && minU != 0.0) {
-                    bitmap.setPixelInfo(255.0 * pow(U / minU, 0.1),
+                    bitmap.setPixelInfo(255.0 * U / minU,
                                         x*param.SQ_SIZE+dx, y*param.SQ_SIZE+dy, Bitmap::B_CH);
                     
                     bitmap.setPixelInfo(0,
@@ -79,6 +92,20 @@ void Interface::updateImage() {
             }
         }
         }
+
+
+
+        for(int i = 0; i < calc->getCharge().size(); i++) {
+            for(int dx = 0; dx < param.SQ_SIZE; dx++) {
+            for(int dy = 0; dy < param.SQ_SIZE; dy++) {
+                bitmap.setPixelInfo(255.0,
+                                    calc->getCharge()[i].x*param.SQ_SIZE+dx + param.SIZE * param.SQ_SIZE,
+                                    (param.SIZE - calc->getCharge()[i].y) *param.SQ_SIZE+dy, Bitmap::G_CH);
+                    
+            }
+            }
+        }
+
     }
     bitmap.updateSprite();
 }

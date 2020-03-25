@@ -7,7 +7,23 @@
 
 namespace CUDA {
     class Grid3;
-    struct Task;
+
+    void printDevicesProperties();
+    const int BLOCK_SIZE = 8;
+
+    const int N_DIR = 8;
+    const std::vector<Vector3i> DIR{
+        Vector3i( 0, 1, 0),
+        Vector3i( 0,-1, 0),
+        Vector3i( 1, 0, 0),
+        Vector3i(-1, 0, 0),
+
+        Vector3i( 1, 1, 0),
+        Vector3i( 1,-1, 0),
+        Vector3i(-1, 1, 0),
+        Vector3i(-1,-1, 0),
+    };
+
 
     class Calculator {
     public:
@@ -16,7 +32,15 @@ namespace CUDA {
         ~Calculator();
 
         void calcU();
+        void grow();
+
+        const std::pair<int, int> newDir();
+        const Vector3 calcE(const Vector3i&);
+
         double getU(int, int, int);
+        double getU(const Vector3i& v) { return getU(v.x, v.y, v.z); };
+
+        const std::vector<Vector3i>& getCharge() { return charge; }
     private:
         Parameters param;
 
@@ -26,8 +50,8 @@ namespace CUDA {
         Grid3 *border;
         std::vector<Vector3i> charge;
 
-        Task* task;
-        Task* _task;
+        bool * task;
+        bool *_task;
 
         int borderSize;
         int lst_chargeCount;
@@ -46,6 +70,7 @@ namespace CUDA {
         ~Grid3();
 
         double at(int, int, int);
+        double at(const Vector3i& v) { return at(v.x, v.y, v.z); }
         void set(double, int, int, int);
         void set(double, const Vector3i&);
 
@@ -72,10 +97,6 @@ namespace CUDA {
         bool hasGPU;
     };
 
-    struct Task {
-        int a;
-        int a1, a2, a3, a4, a5, a6;
-    };
 
     void addInt(int*, const int*, const int*, unsigned int);
 
