@@ -1,0 +1,5 @@
+﻿  Main.cpp
+  Matrix.cpp
+  Matrix3.cpp
+  Solver.cpp
+sfml-graphics.lib(sfml-graphics-2.dll) : fatal error LNK1112: тип компьютера модуля "x64" конфликтует с типом целевого компьютера "x86"

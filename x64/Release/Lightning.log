@@ -1,53 +1,9 @@
-﻿  Compiling CUDA source file Calculator.cu...
-  
-  D:\Users\Admin\Documents\GitHub\Lightning>"D:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\bin\nvcc.exe" -gencode=arch=compute_30,code=\"sm_30,compute_30\" --use-local-env -ccbin "D:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.25.28610\bin\HostX86\x64" -x cu  -I"D:\libs\SFML-2.5.1\include" -I"D:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include" -I"D:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DWIN64 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc142.pdb /FS /Zi  /MD " -o x64\Release\Calculator.cu.obj "D:\Users\Admin\Documents\GitHub\Lightning\Calculator.cu" 
-D:/Users/Admin/Documents/GitHub/Lightning/Calculator.cu(61): warning C4002: ёыш°ъюь ьэюую рЁуєьхэЄют фы  т√чютр ьръЁюёр, яюфюсэюую ЇєэъЎшш, "N"
-D:/Users/Admin/Documents/GitHub/Lightning/Calculator.cu(61): warning C4002: ёыш°ъюь ьэюую рЁуєьхэЄют фы  т√чютр ьръЁюёр, яюфюсэюую ЇєэъЎшш, "N"
-  Calculator.cu
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:/Users/Admin/Documents/GitHub/Lightning/Calculator.cu(74): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-  Bitmap.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Bitmap.cpp(15,19): warning C4018: <: несоответствие типов со знаком и без знака
-D:\Users\Admin\Documents\GitHub\Lightning\Bitmap.cpp(16,19): warning C4018: <: несоответствие типов со знаком и без знака
-  Calculator.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Calculator.cpp(110,33): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-  Interface.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Interface.cpp(77,51): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Interface.cpp(84,51): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Interface.cpp(101,37): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
-  Main.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-  Parameters.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Parameters.cpp(8,28): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Parameters.cpp(18,19): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-D:\Users\Admin\Documents\GitHub\Lightning\Parameters.cpp(30,26): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Parameters.cpp(23,18): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  Tester.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-  Vector.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-  Vector3.cpp
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,24): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,32): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-D:\Users\Admin\Documents\GitHub\Lightning\Vector.h(44,40): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-     Создается библиотека D:\Users\Admin\Documents\GitHub\Lightning\x64\Release\Lightning.lib и объект D:\Users\Admin\Documents\GitHub\Lightning\x64\Release\Lightning.exp
+﻿  Main.cpp
+  Matrix.cpp
+  Matrix3.cpp
+  Solver.cpp
   Создание кода
-  Compiler version has changed, fall back to full compilation.
-D:\Users\Admin\Documents\GitHub\Lightning\Parameters.cpp(20): warning C4715: checkString: значение возвращается не при всех путях выполнения
-  All 345 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Compiler switch has changed, fall back to full compilation.
+  All 9 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Создание кода завершено
   Lightning.vcxproj -> D:\Users\Admin\Documents\GitHub\Lightning\x64\Release\Lightning.exe

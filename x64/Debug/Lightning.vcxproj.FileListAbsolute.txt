@@ -1,0 +1,2 @@
+D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.exe
+D:\Users\Admin\Documents\GitHub\Lightning\x64\Debug\Lightning.pdb

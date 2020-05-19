@@ -35,6 +35,9 @@ void Matrix3::allocate_mem() {
     }
 
     data = new double[sizeX * sizeY * sizeZ];
+    for(int i = 0; i < sizeX * sizeY * sizeZ; i++)
+        data[i] = 0.0f;
+
     is_mem_allocated = true;
 }
 

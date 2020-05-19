@@ -1,27 +1,5 @@
 #include <SFML/Graphics.hpp>
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
-    return 0;
-}
-/*
 #include <cmath>
 
 #include "Matrix.h"
@@ -102,19 +80,18 @@ void set_u(Matrix3 &u, std::vector<Point> &point, int N, int N_z, double U_0) {
 }
 
 void calc_U(Matrix3 &f, Matrix3 &u, Matrix3 &u_prev, double eps, int N, int N_z, std::vector<Point> &point, double U_0) {
-    int n_op = N * N * N_z / 3.14 / 3.14 / 3.14 * log(1 / eps);
+    int n_op = N * N * N_z * log(1 / eps);
 
     printf("n operation: %d\n", n_op);
 
-    int n_k = 10000;
+    int n_k = 1000*10;
 
-    for(int t = 0; t < n_op / n_k /* !!!!!!!!!!!!!!!!!!!! ; t ++) {
+    for(int t = 0; t < n_op / n_k /* !!!!!!!!!!!!!!!!!!!!*/ ; t ++) {
 
         for(int x = 0; x < N; x ++) {
         for(int y = 0; y < N; y ++) {
         for(int z = 0; z < N_z; z ++) {
-            double d = 1.0f / 6.0f * f.get_num(y, x, z) / 10 / 10 / 10 +
-                       1.0f / 6.0f * Lambda(u_prev, y, x, z, N, N_z);
+            double d = -1.0f / 6.0f * Lambda(u_prev, y, x, z, N, N_z);
             u.set_num(y, x, z, d);
         }}}
 
@@ -249,8 +226,8 @@ int main() {
     srand(time(NULL));
     //freopen("out.txt", "wt", stdout);
 
-    const int N = 200;
-    const int N_z = 10;
+    const int N = 128;
+    const int N_z = 16;
     const int N_S = 3;
     const double U_0 = 80;
     const double E_i = 1 * U_0 / 1000;
@@ -299,7 +276,7 @@ int main() {
 
         /*for(int i = 0; i < n_point; i ++) {
             f.set_num(point[i].y, point[i].x, N_z/2, charge / n_point);
-        }
+        }*/ 
 
         calc_U(f, u, u_prev, EPS, N, N_z, point, U_0);
         set_u(u, point, N, N_z, U_0);
