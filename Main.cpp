@@ -1,5 +1,27 @@
 #include <SFML/Graphics.hpp>
+int main()
+{
+    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
+
+    return 0;
+}
+/*
 #include <cmath>
 
 #include "Matrix.h"
@@ -86,7 +108,7 @@ void calc_U(Matrix3 &f, Matrix3 &u, Matrix3 &u_prev, double eps, int N, int N_z,
 
     int n_k = 10000;
 
-    for(int t = 0; t < n_op / n_k /* !!!!!!!!!!!!!!!!!!!! */; t ++) {
+    for(int t = 0; t < n_op / n_k /* !!!!!!!!!!!!!!!!!!!! ; t ++) {
 
         for(int x = 0; x < N; x ++) {
         for(int y = 0; y < N; y ++) {
@@ -277,7 +299,7 @@ int main() {
 
         /*for(int i = 0; i < n_point; i ++) {
             f.set_num(point[i].y, point[i].x, N_z/2, charge / n_point);
-        }*/
+        }
 
         calc_U(f, u, u_prev, EPS, N, N_z, point, U_0);
         set_u(u, point, N, N_z, U_0);
